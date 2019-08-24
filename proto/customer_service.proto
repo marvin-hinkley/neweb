@@ -1,0 +1,23 @@
+syntax = "proto3";
+package neweb.customerservice;
+
+service CustomerService {
+  rpc Get (CustomerRequest) returns (CustomerModel);
+  rpc Create (CustomerModel) returns (CustomerModel);
+  rpc Update (CustomerModel) returns (BooleanResponse);
+  rpc Delete (CustomerRequest) returns (BooleanResponse);
+}
+
+message CustomerRequest {
+  string id = 1;
+}
+
+message CustomerModel {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message BooleanResponse {
+  bool success = 1;
+}
