@@ -1,18 +1,23 @@
-const PORT = 3003;
 const grpc = require('grpc');
+const path = require('path');
 const protoLoader = require('@grpc/proto-loader');
-const packageDefinition = protoLoader.loadSync('./customer_service.proto', {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true
-});
-const descriptor = grpc.loadPackageDefinition(packageDefinition);
-const customerService = descriptor.customerService;
+
+const PORT = 3003;
+const server = new grpc.Server();
+const packageDefinition = protoLoader.loadSync(
+  path.join(__dirname, '../../proto', 'customer_service.proto'),
+  {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+  }
+);
+const proto = grpc.loadPackageDefinition(packageDefinition);
 
 const functions = {
-  Get: function(call, callback) {
+  get: function(call, callback) {
     console.log('Get customer called');
 
     callback(null, {
@@ -23,7 +28,7 @@ const functions = {
       }
     });
   },
-  Create: function(call, callback) {
+  create: function(call, callback) {
     console.log('Create customer called');
 
     callback(null, {
@@ -34,14 +39,14 @@ const functions = {
       }
     });
   },
-  Update: function(call, callback) {
+  update: function(call, callback) {
     console.log('Update customer called');
 
     callback(null, {
       result: true
     });
   },
-  Delete: function(call, callback) {
+  delete: function(call, callback) {
     console.log('Delete customer called');
 
     callback(null, {
@@ -50,7 +55,6 @@ const functions = {
   }
 };
 
-const server = new grpc.Server();
-server.addService(customerService, functions);
+server.addService(proto.neweb.customerservice, functions);
 server.bind(`0.0.0.0:${PORT}`, grpc.ServerCredentials.createInsecure());
 server.start();

@@ -1,13 +1,18 @@
-const PORT = 3002;
 const grpc = require('grpc');
+const path = require('path');
 const protoLoader = require('@grpc/proto-loader');
-const packageDefinition = protoLoader.loadSync('./product_service.proto', {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true
-});
+
+const PORT = 3003;
+const packageDefinition = protoLoader.loadSync(
+  path.join(__dirname, '../../proto', 'product_service.proto'),
+  {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+  }
+);
 const descriptor = grpc.loadPackageDefinition(packageDefinition);
 const productService = descriptor.productService;
 
