@@ -1,6 +1,10 @@
 {
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "startapi": "nodemon ./api/server.js",
+    "start_customerservice": "nodemon ./services/customer/service.js",
+    "start_orderservice": "nodemon ./services/order/service.js",
+    "start_productservice": "nodemon ./services/product/service.js"
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",

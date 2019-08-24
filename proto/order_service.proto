@@ -1,0 +1,23 @@
+syntax = "proto3";
+package orderservice;
+
+service OrderService {
+  rpc Get (OrderRequest) returns (OrderModel);
+  rpc Create (OrderModel) returns (OrderModel);
+  rpc Update (OrderModel) returns (BooleanResponse);
+  rpc Delete (OrderRequest) returns (BooleanResponse);
+}
+
+message OrderRequest {
+  string id = 1;
+}
+
+message OrderModel {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message BooleanResponse {
+  bool success = 1;
+}
