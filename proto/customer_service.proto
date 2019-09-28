@@ -1,5 +1,5 @@
 syntax = "proto3";
-package neweb.customerservice;
+package neweb;
 
 service CustomerService {
   rpc Get (CustomerRequest) returns (CustomerModel);

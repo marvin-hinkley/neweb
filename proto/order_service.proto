@@ -1,5 +1,5 @@
 syntax = "proto3";
-package orderservice;
+package neweb;
 
 service OrderService {
   rpc Get (OrderRequest) returns (OrderModel);
