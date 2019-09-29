@@ -22,10 +22,10 @@ app.use(async (ctx, next) => {
 });
 
 //Routes
-const router = new Router();
-require('./routes/routes')({router})
-app.use(router.routes());
-app.use(router.allowedMethods());
+const customerRouter = new Router();
+require('./routes/customer.routes')({customerRouter})
+app.use(customerRouter.routes());
+app.use(customerRouter.allowedMethods());
 
 //Server
 const server = app.listen(PORT);

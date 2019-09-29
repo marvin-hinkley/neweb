@@ -1,4 +1,3 @@
-const routes = require('express').Router();
 const grpc = require('grpc');
 const path = require('path');
 const protoLoader = require('@grpc/proto-loader');
@@ -19,31 +18,35 @@ const customerService = new customerProto.neweb.CustomerService(
   grpc.credentials.createInsecure()
 );
 
-routes.get('/:id', (req, res) => {
-  customerService.Get({ id: req.params.id }, (err, customer) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
 
-    res.status(200).json({
-      message: 'successfully connected to customer retrieval method, marster',
-      customer: customer
+module.exports = ({ router }) => {
+  router.get('/', async (ctx, next) => {
+    console.log('get all customer is not yet implemented');
+  })
+
+  router.get('/:id', (ctx, next) => {
+    customerService.Get({ id: req.params.id }, (err, customer) => {
+      if (err) {
+        throw Error(err);
+      }
+
+      ctx.body = {
+        message: 'successfully connected to customer retrieval method, marster',
+        customer: customer
+      };
     });
   });
-})
-.delete('/:id', (req, res) => {
-  customerService.Delete({ id: req.params.id }, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
 
-    res.status(200).json({
-      message: 'successfully connected to customer deletion method, marster',
-      result: `success: ${JSON.stringify(result.success)}`
+  router.delete('/:id', (ctx, next) => {
+    customerService.Delete({ id: req.params.id }, (err, result) => {
+      if (err) {
+        throw Error(err);
+      }
+
+      ctx.body = {
+        message: 'successfully connected to customer deletion method, marster',
+        result: `success: ${JSON.stringify(result.success)}`
+      };
     });
   });
-});
-
-module.exports = routes;
+}
