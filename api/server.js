@@ -1,15 +1,34 @@
+const Koa = require('koa');
+const Router = require('koa-router');
+const logger = require('koa-logger');
+const app = new Koa();
+
+//Routes
+const routes = ;
+
+//Reference vars
 const PORT = 3000;
-const app = require('express')();
-const bodyParser = require('body-parser');
-const routes = require('./routes/routes');
-const io = require('socket.io').listen(
-  app.listen(PORT, () => console.log('server started, marster'))
-);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use('/', routes);
+//logging and error handling
+app.use(logger());
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (e) {
+    ctx.status = e.status || 500;
+    ctx. body = e.message;
+    ctx.app.emit('error', e, ctx);
+  }
+});
 
-io.sockets.on('connection', socket =>
-  console.log('socket connection established, master')
-);
+//Routes
+const router = new Router();
+require('./routes/routes')({router})
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+//Server
+const server = app.listen(PORT);
+
+//Export for testing
+module.exports = server;
